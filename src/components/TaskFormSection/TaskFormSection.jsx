@@ -29,9 +29,11 @@ const TaskFormSection = () => {
     <section
       id="#tasksForm"
       name="tasksForm"
-      className="  flex flex-col gap-4 items-center justify-center py-12 min-h-max w-[50vw] "
+      className="  flex flex-col md:gap-4 gap-12  items-center justify-center py-12 min-h-max w-[80vw] md:w-[50vw] "
     >
-      <h1 className="font-bold text-xl">Ma To-Do List par Catégories</h1>
+      <h1 className="font-bold text-xl text-center">
+        Ma To-Do List par Catégories
+      </h1>
       <CategoriesForm onAddCategory={addCategory} />
       <CategoryFilter categories={categories} onFilterChange={setFilter} />
       <TasksForm onAddTask={addTask} categories={categories} />
