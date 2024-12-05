@@ -28,10 +28,12 @@ const TasksForm = ({ onAddTask, categories }) => {
       <select
         value={selectedCategory}
         onChange={(e) => setSelectedCategory(e.target.value)}
-        className="border-[#767676] border-[1px] rounded-sm w-full   font-bold italic"
+        className="border-[#767676] border-[1px] rounded-sm w-full p-2  font-bold italic"
       >
         <option value="">
-          {categories.length === 0 ? "Ajouter une catégorie" : categories[0]}
+          {categories.length === 0
+            ? "Ajouter une catégorie"
+            : "choisissez une categorie"}
         </option>
 
         {categories.map((cat) => (
