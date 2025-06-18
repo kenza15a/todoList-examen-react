@@ -1,18 +1,21 @@
 import React from "react";
 
 const CategoryFilter = ({ categories, onFilterChange }) => {
+  const handleChange = (e) => {
+    const value = e.target.value;
+    onFilterChange(value === "" ? null : parseInt(value));
+  };
+
   return (
     <select
-      onChange={(e) => onFilterChange(e.target.value)}
+      onChange={handleChange}
       className="select my-4 border-[#767676] border-[1px] rounded-md w-full p-2"
+      id="categoriesSection"
     >
-      {/* Option for "All Categories" */}
       <option value="">Toutes les catégories</option>
-
-      {/* Render category options */}
       {categories.map((cat) => (
-        <option key={cat} value={cat}>
-          {cat}
+        <option key={cat.id} value={cat.id}>
+          {cat.name}
         </option>
       ))}
     </select>

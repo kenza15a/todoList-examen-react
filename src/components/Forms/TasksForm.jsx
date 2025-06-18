@@ -8,8 +8,13 @@ const TasksForm = ({ onAddTask, categories }) => {
   const handleSubmit = (e) => {
     e.preventDefault();
     if (task && selectedCategory) {
-      onAddTask({ task, category: selectedCategory, completed: false });
+      onAddTask({
+        description: task,
+        category_id: parseInt(selectedCategory),
+        is_completed: false,
+      });
       setTask("");
+      setSelectedCategory("");
     }
   };
 
@@ -28,17 +33,16 @@ const TasksForm = ({ onAddTask, categories }) => {
       <select
         value={selectedCategory}
         onChange={(e) => setSelectedCategory(e.target.value)}
-        className="border-[#767676] border-[1px] rounded-sm w-full p-2  font-bold italic"
+        className="border-[#767676] border-[1px] rounded-sm w-full p-2 font-bold italic"
       >
         <option value="">
           {categories.length === 0
             ? "Ajouter une catégorie"
-            : "choisissez une categorie"}
+            : "Choisissez une catégorie"}
         </option>
-
         {categories.map((cat) => (
-          <option key={cat} value={cat}>
-            {cat}
+          <option key={cat.id} value={cat.id}>
+            {cat.name}
           </option>
         ))}
       </select>
