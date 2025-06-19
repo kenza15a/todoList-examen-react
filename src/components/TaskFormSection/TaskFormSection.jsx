@@ -3,7 +3,7 @@ import CategoriesForm from "../Forms/CategoriesForm";
 import CategoryFilter from "../CategoryFilter/CategoryFilter";
 import TasksForm from "../Forms/TasksForm";
 import TasksList from "../TasksList/TasksList";
-
+import Button from "../Button/Button";
 import {
   getTasks,
   getCategories,
@@ -12,21 +12,26 @@ import {
   updateTask,
   createCategory,
 } from "../../uils/apiServices";
-import Button from "../Button/Button";
-const TaskFormSection = () => {
+
+const TaskFormSection = ({ searchTerm }) => {
   const [tasks, setTasks] = useState([]);
   const [categories, setCategories] = useState([]);
-  const [filter, setFilter] = useState(null);
+  const [filterCategory, setFilterCategory] = useState(null);
+  const [filterCompleted, setFilterCompleted] = useState(null);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState("");
   const [displayForm, setDisplayForm] = useState(false);
-  const handleDisplayForm = () => {
-    setDisplayForm(!displayForm);
-  };
+
+  const handleDisplayForm = () => setDisplayForm(!displayForm);
+
   const fetchTasks = async () => {
     try {
       setLoading(true);
-      const tasksData = await getTasks(filter);
+      const tasksData = await getTasks({
+        category: filterCategory,
+        is_completed: filterCompleted,
+        search: searchTerm,
+      });
       setTasks(tasksData);
     } catch (err) {
       console.error(err);
@@ -46,13 +51,12 @@ const TaskFormSection = () => {
         setError("Erreur lors du chargement des catégories.");
       }
     };
-
     fetchCategories();
   }, []);
 
   useEffect(() => {
     fetchTasks();
-  }, [filter]);
+  }, [filterCategory, filterCompleted, searchTerm]);
 
   const handleAddCategory = async (name) => {
     try {
@@ -67,7 +71,7 @@ const TaskFormSection = () => {
   const handleAddTask = async (task) => {
     try {
       await createTask(task);
-      fetchTasks(); // recharge avec filtre actif
+      fetchTasks();
     } catch (err) {
       console.error(err);
       setError("Erreur lors de l'ajout de la tâche.");
@@ -108,23 +112,38 @@ const TaskFormSection = () => {
         Ma To-Do List par Catégories
       </h1>
 
-      <CategoryFilter
-        categories={categories}
-        onFilterChange={(value) => setFilter(value)}
-      />
+      <div className="flex flex-col md:flex-row gap-4 w-full">
+        <CategoryFilter
+          categories={categories}
+          onFilterChange={setFilterCategory}
+        />
+
+        <select
+          onChange={(e) =>
+            setFilterCompleted(e.target.value === "" ? null : e.target.value)
+          }
+          className="select border border-gray-300 p-2 rounded w-full md:w-auto"
+        >
+          <option value="">Toutes</option>
+          <option value="true">Terminées</option>
+          <option value="false">Non terminées</option>
+        </select>
+      </div>
 
       <TasksList
         tasks={tasks}
         onDeleteTask={handleDeleteTask}
         onToggleTask={handleToggleTask}
       />
-      <section
-        id="tasksForm"
-        className="flex flex-col gap-4  w-full"
-      >
-        <Button buttonText="Ajouter une tâche" onClick={handleDisplayForm} className="mx-auto"/>
+
+      <section id="tasksForm" className="flex flex-col gap-4 w-full">
+        <Button
+          buttonText="Ajouter une tâche"
+          onClick={handleDisplayForm}
+          className="mx-auto"
+        />
         {displayForm && (
-          <div className="flex flex-col gap-4 ">
+          <div className="flex flex-col gap-4">
             <CategoriesForm onAddCategory={handleAddCategory} />
             <TasksForm onAddTask={handleAddTask} categories={categories} />
           </div>
