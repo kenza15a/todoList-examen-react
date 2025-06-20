@@ -1,34 +1,52 @@
-import { useState } from "react";
-import Button from "../Button/Button";
 
-const TasksForm = ({ onAddTask, categories }) => {
+// components/Forms/TaskForm.jsx
+import { useState, useEffect } from "react";
+import Button from "../Ui/Button/Button";
+
+const TaskForm = ({
+  onSubmit,
+  categories,
+  type = "create",
+  initialData = {},
+  onClose,
+}) => {
   const [task, setTask] = useState("");
   const [selectedCategory, setSelectedCategory] = useState("");
+
+  useEffect(() => {
+    if (type === "edit" && initialData) {
+      setTask(initialData.description || "");
+      setSelectedCategory(initialData.category?.id || "");
+    }
+  }, [initialData, type]);
 
   const handleSubmit = (e) => {
     e.preventDefault();
     if (task && selectedCategory) {
-      onAddTask({
+      onSubmit({
+        ...initialData,
         description: task,
         category_id: parseInt(selectedCategory),
-        is_completed: false,
       });
-      setTask("");
-      setSelectedCategory("");
+      if (type === "create") {
+        setTask("");
+        setSelectedCategory("");
+      }
+      if (onClose) onClose();
     }
   };
 
   return (
     <form
       onSubmit={handleSubmit}
-      className="mb-4 w-full flex flex-col gap-2 md:flex-row "
+      className="my-4 w-full flex flex-col gap-2 md:flex-row"
     >
       <input
         type="text"
         value={task}
         onChange={(e) => setTask(e.target.value)}
         placeholder="Nouvelle tâche"
-        className=" border-[#767676] border-[1px] rounded-sm w-full p-2 "
+        className="border-[#767676] border-[1px] rounded-sm w-full p-2"
       />
       <select
         value={selectedCategory}
@@ -46,8 +64,12 @@ const TasksForm = ({ onAddTask, categories }) => {
           </option>
         ))}
       </select>
-      <Button buttonText="Ajouter" onClick={handleSubmit} />
+      <Button
+        buttonText={type === "edit" ? "Modifier" : "Ajouter"}
+        onClick={handleSubmit}
+      />
     </form>
   );
 };
-export default TasksForm;
+
+export default TaskForm;

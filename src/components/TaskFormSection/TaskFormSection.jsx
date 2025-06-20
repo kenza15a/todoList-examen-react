@@ -1,9 +1,10 @@
 import React, { useEffect, useState } from "react";
 import CategoriesForm from "../Forms/CategoriesForm";
-import CategoryFilter from "../CategoryFilter/CategoryFilter";
-import TasksForm from "../Forms/TasksForm";
+import CategoryFilter from "../Filters/CategoryFilter/CategoryFilter";
+import TaskForm from "../Forms/TaskForm";
 import TasksList from "../TasksList/TasksList";
-import Button from "../Button/Button";
+import Button from "../Ui/Button/Button";
+import Modal from "../Modal/Modal";
 import {
   getTasks,
   getCategories,
@@ -12,6 +13,7 @@ import {
   updateTask,
   createCategory,
 } from "../../uils/apiServices";
+import IsCompletedFilter from "../Filters/IsCompletedFilter/IsCompletedFilter";
 
 const TaskFormSection = ({ searchTerm }) => {
   const [tasks, setTasks] = useState([]);
@@ -20,9 +22,8 @@ const TaskFormSection = ({ searchTerm }) => {
   const [filterCompleted, setFilterCompleted] = useState(null);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState("");
-  const [displayForm, setDisplayForm] = useState(false);
-
-  const handleDisplayForm = () => setDisplayForm(!displayForm);
+  const [isCreateModalOpen, setIsCreateModalOpen] = useState(false);
+  const [isCategoryModalOpen, setIsCategoryModalOpen] = useState(false);
 
   const fetchTasks = async () => {
     try {
@@ -35,7 +36,7 @@ const TaskFormSection = ({ searchTerm }) => {
       setTasks(tasksData);
     } catch (err) {
       console.error(err);
-      setError("Erreur lors du chargement des tâches.");
+      setError("Erreur lors du chargement des taches.");
     } finally {
       setLoading(false);
     }
@@ -48,7 +49,7 @@ const TaskFormSection = ({ searchTerm }) => {
         setCategories(categoriesData);
       } catch (err) {
         console.error(err);
-        setError("Erreur lors du chargement des catégories.");
+        setError("Erreur lors du chargement des catégorie.");
       }
     };
     fetchCategories();
@@ -56,6 +57,7 @@ const TaskFormSection = ({ searchTerm }) => {
 
   useEffect(() => {
     fetchTasks();
+  // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [filterCategory, filterCompleted, searchTerm]);
 
   const handleAddCategory = async (name) => {
@@ -68,13 +70,24 @@ const TaskFormSection = ({ searchTerm }) => {
     }
   };
 
-  const handleAddTask = async (task) => {
+  const handleCreateTask = async (task) => {
     try {
       await createTask(task);
       fetchTasks();
+      setIsCreateModalOpen(false);
     } catch (err) {
       console.error(err);
-      setError("Erreur lors de l'ajout de la tâche.");
+      setError("Erreur lors de l'ajout de la tache.");
+    }
+  };
+
+  const handleUpdateTask = async (taskId, updatedData) => {
+    try {
+      await updateTask(taskId, updatedData);
+      fetchTasks();
+    } catch (err) {
+      console.error(err);
+      setError("Erreur lors de la mise a jour de la tache.");
     }
   };
 
@@ -84,7 +97,7 @@ const TaskFormSection = ({ searchTerm }) => {
       fetchTasks();
     } catch (err) {
       console.error(err);
-      setError("Erreur lors de la suppression de la tâche.");
+      setError("Erreur lors de la suppression de la tache.");
     }
   };
 
@@ -96,7 +109,7 @@ const TaskFormSection = ({ searchTerm }) => {
       fetchTasks();
     } catch (err) {
       console.error(err);
-      setError("Erreur lors de la mise à jour de la tâche.");
+      setError("Erreur lors de la mise a jour de la tache.");
     }
   };
 
@@ -109,7 +122,7 @@ const TaskFormSection = ({ searchTerm }) => {
       className="flex flex-col md:gap-6 gap-12 items-center justify-center py-12 min-h-max w-[70vw] md:w-[60vw]"
     >
       <h1 className="font-bold text-xl text-center">
-        Ma To-Do List par Catégories
+        Ma To-Do List par catégorie
       </h1>
 
       <div className="flex flex-col md:flex-row gap-4 w-full">
@@ -118,37 +131,53 @@ const TaskFormSection = ({ searchTerm }) => {
           onFilterChange={setFilterCategory}
         />
 
-        <select
-          onChange={(e) =>
-            setFilterCompleted(e.target.value === "" ? null : e.target.value)
-          }
-          className="select border border-gray-300 p-2 rounded w-full md:w-auto"
-        >
-          <option value="">Toutes</option>
-          <option value="true">Terminées</option>
-          <option value="false">Non terminées</option>
-        </select>
+        <IsCompletedFilter
+          value={filterCompleted}
+          onChange={setFilterCompleted}
+        />
       </div>
 
       <TasksList
         tasks={tasks}
         onDeleteTask={handleDeleteTask}
         onToggleTask={handleToggleTask}
+        categories={categories}
+        onUpdateTask={handleUpdateTask}
       />
 
-      <section id="tasksForm" className="flex flex-col gap-4 w-full">
+      <div className="flex justify-center gap-4">
         <Button
           buttonText="Ajouter une tâche"
-          onClick={handleDisplayForm}
-          className="mx-auto"
+          onClick={() => setIsCreateModalOpen(true)}
         />
-        {displayForm && (
-          <div className="flex flex-col gap-4">
-            <CategoriesForm onAddCategory={handleAddCategory} />
-            <TasksForm onAddTask={handleAddTask} categories={categories} />
-          </div>
-        )}
-      </section>
+        <Button
+          buttonText="Ajouter une catégorie"
+          onClick={() => setIsCategoryModalOpen(true)}
+          className="bg-blue-600"
+        />
+      </div>
+
+      <Modal
+        isOpen={isCreateModalOpen}
+        onClose={() => setIsCreateModalOpen(false)}
+      >
+        <TaskForm
+          type="create"
+          onSubmit={handleCreateTask}
+          categories={categories}
+        />
+      </Modal>
+      <Modal
+        isOpen={isCategoryModalOpen}
+        onClose={() => setIsCategoryModalOpen(false)}
+      >
+        <CategoriesForm
+          onAddCategory={(name) => {
+            handleAddCategory(name);
+            setIsCategoryModalOpen(false);
+          }}
+        />
+      </Modal>
     </section>
   );
 };

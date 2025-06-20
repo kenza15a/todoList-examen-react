@@ -1,5 +1,5 @@
 import React, { useState } from "react";
-import Button from "../Button/Button";
+import Button from "../Ui/Button/Button";
 
 const CategoriesForm = ({ onAddCategory }) => {
   const [category, setCategory] = useState("");

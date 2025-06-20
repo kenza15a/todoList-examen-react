@@ -1,6 +1,6 @@
 import React, { useState } from "react";
 import { Menu, X } from "lucide-react";
-import Button from "../Button/Button";
+import Button from "../Ui/Button/Button";
 
 const Navbar = ({ onSearchChange }) => {
   const [isOpen, setIsOpen] = useState(false);
@@ -53,12 +53,7 @@ const Navbar = ({ onSearchChange }) => {
             onClick={() => scrollTo("tasksForm")}
             className="bg-[#28A745] hover:bg-green-600 px-4 py-2 rounded-md transition"
           />
-          <button
-            onClick={() => scrollTo("categoriesSection")}
-            className="hover:underline hover:text-gray-300 transition-all"
-          >
-            Catégories
-          </button>
+        
         </div>
       </div>
 
@@ -71,13 +66,6 @@ const Navbar = ({ onSearchChange }) => {
                 buttonText="Ajouter une tâche"
                 onClick={() => scrollTo("tasksForm")}
                 className="w-full text-left bg-[#28A745] px-4 py-2 rounded hover:bg-green-600"
-              />
-            </li>
-            <li>
-              <Button
-                onClick={() => scrollTo("categoriesSection")}
-                buttonText="Catégories"
-                className="w-full text-left hover:underline"
               />
             </li>
           </ul>
