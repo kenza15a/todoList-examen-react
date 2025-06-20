@@ -1,70 +1,112 @@
-# Getting Started with Create React App
+# 📋 React Frontend - Application To-Do List
 
-This project was bootstrapped with [Create React App](https://github.com/facebook/create-react-app).
+Ce projet est le frontend d'une application de gestion de tâches (To-Do List) réalisée avec React. Il permet à un utilisateur de créer, modifier, filtrer et supprimer des tâches, avec gestion des catégories et des statuts (terminée ou non). L’application communique avec une API Django REST.
 
-## Available Scripts
+---
 
-In the project directory, you can run:
+## 📁 Prérequis
 
-### `npm start`
+Avant de commencer, assurez-vous d’avoir les outils suivants installés sur votre machine :
 
-Runs the app in the development mode.\
-Open [http://localhost:3000](http://localhost:3000) to view it in your browser.
+* **Node.js** (version 18 ou supérieure recommandée) : [https://nodejs.org](https://nodejs.org)
+* **npm** (installé automatiquement avec Node.js)
+* Un **serveur backend Django REST** fonctionnel à l'adresse suivante :
+  `http://localhost:8000/api/`
 
-The page will reload when you make changes.\
-You may also see any lint errors in the console.
+---
 
-### `npm test`
+## 🚀 Installation et démarrage
 
-Launches the test runner in the interactive watch mode.\
-See the section about [running tests](https://facebook.github.io/create-react-app/docs/running-tests) for more information.
+### 1. Cloner le projet
 
-### `npm run build`
+```bash
+git clone https://github.com/kenza15a/todoList-examen-react
 
-Builds the app for production to the `build` folder.\
-It correctly bundles React in production mode and optimizes the build for the best performance.
+```
 
-The build is minified and the filenames include the hashes.\
-Your app is ready to be deployed!
+### 2. Installer les dépendances
 
-See the section about [deployment](https://facebook.github.io/create-react-app/docs/deployment) for more information.
+```bash
+npm install
+# ou avec yarn
+yarn install
+```
 
-### `npm run eject`
+### 3. Vérifier ou modifier l’adresse du backend
 
-**Note: this is a one-way operation. Once you `eject`, you can't go back!**
+Dans le fichier `src/utils/apiServices.js`, vérifiez que l’URL correspond à celle de votre backend :
 
-If you aren't satisfied with the build tool and configuration choices, you can `eject` at any time. This command will remove the single build dependency from your project.
+```js
+const BASE_URL = "http://localhost:8000/api";
+```
 
-Instead, it will copy all the configuration files and the transitive dependencies (webpack, Babel, ESLint, etc) right into your project so you have full control over them. All of the commands except `eject` will still work, but they will point to the copied scripts so you can tweak them. At this point you're on your own.
+> Si votre backend est hébergé ailleurs, remplacez cette URL par celle du serveur.
 
-You don't have to ever use `eject`. The curated feature set is suitable for small and middle deployments, and you shouldn't feel obligated to use this feature. However we understand that this tool wouldn't be useful if you couldn't customize it when you are ready for it.
+### 4. Lancer le serveur de développement
 
-## Learn More
+```bash
+npm start
+# ou
+yarn start
+```
 
-You can learn more in the [Create React App documentation](https://facebook.github.io/create-react-app/docs/getting-started).
+Accédez à l’application à l’adresse : [http://localhost:3000](http://localhost:3000)
 
-To learn React, check out the [React documentation](https://reactjs.org/).
+---
 
-### Code Splitting
+## 🧠 Fonctionnalités
 
-This section has moved here: [https://facebook.github.io/create-react-app/docs/code-splitting](https://facebook.github.io/create-react-app/docs/code-splitting)
+* ✅ Créer une tâche
+* ✏️ Modifier une tâche existante
+* 🗑️ Supprimer une tâche
+* 🔍 Filtrer les tâches par **catégorie**
+* 📌 Filtrer les tâches par **statut** (Terminée / Non terminée)
+* 🆕 Ajouter une **catégorie**
+* 🧾 Validation des champs avec messages d’erreurs affichés en direct
 
-### Analyzing the Bundle Size
+---
 
-This section has moved here: [https://facebook.github.io/create-react-app/docs/analyzing-the-bundle-size](https://facebook.github.io/create-react-app/docs/analyzing-the-bundle-size)
+## 🧹 Structure du projet
 
-### Making a Progressive Web App
+```
+src/
+│
+├── components/
+│   ├── Filters/            # Contient CategoryFilter, IsCompletedFilter, etc.
+│   ├── Footer/             # Footer component
+│   ├── Forms/              # TaskForm, CategoriesForm
+│   ├── Modal/              # Modal.jsx
+│   ├── Navbar/             # Navbar.jsx
+│   ├── TaskFormSection/    # Composant principal d’affichage
+│   ├── TaskItem/           # Chaque tâche individuelle
+│   ├── TasksList/          # Liste des tâches
+│   └── Ui/                 # Boutons, composants réutilisables (Button, Select, etc.)
+│
+├── pages/                  # Pages complètes comme HomePage
+├── uils/                   # Fichiers utilitaires (apiServices.js, etc.)
+├── App.jsx
+├── App.css
+└── index.js
 
-This section has moved here: [https://facebook.github.io/create-react-app/docs/making-a-progressive-web-app](https://facebook.github.io/create-react-app/docs/making-a-progressive-web-app)
+```
 
-### Advanced Configuration
+---
 
-This section has moved here: [https://facebook.github.io/create-react-app/docs/advanced-configuration](https://facebook.github.io/create-react-app/docs/advanced-configuration)
+## ❓ En cas de problème
 
-### Deployment
+* Vérifiez que le backend Django fonctionne bien (commande `python manage.py runserver`)
+* Assurez-vous que le CORS est activé sur le backend pour autoriser les appels depuis le frontend
+* Consultez la console du navigateur (`F12 > Network`) pour identifier les erreurs API
 
-This section has moved here: [https://facebook.github.io/create-react-app/docs/deployment](https://facebook.github.io/create-react-app/docs/deployment)
+---
 
-### `npm run build` fails to minify
+## 📄 Licence
 
-This section has moved here: [https://facebook.github.io/create-react-app/docs/troubleshooting#npm-run-build-fails-to-minify](https://facebook.github.io/create-react-app/docs/troubleshooting#npm-run-build-fails-to-minify)
+Ce projet est open-source et libre pour usage personnel, académique ou de démonstration.
+Aucune responsabilité n’est garantie pour un usage en production sans adaptation.
+
+---
+
+## 👨‍💼 Auteur
+
+Développé  par KENZA FILALI

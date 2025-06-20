@@ -24,13 +24,17 @@ const Navbar = ({ onSearchChange }) => {
     <nav className="bg-[#1F2937] text-white shadow-md px-4 py-3 md:px-8 sticky top-0 z-50 w-full">
       <div className="flex flex-col md:flex-row md:items-center md:justify-between gap-2">
         {/* Top row */}
-        <div className="flex justify-between items-center">
-          <a href="/" className="text-xl font-bold italic text-white">
-            Mes Tâches
+        <div className="flex flex-col justify-between items-center">
+          <a
+            href="/"
+            className="text-xl md:text-2xl font-bold  text-white line-through "
+          >
+            MY TASKS
           </a>
+          <p className="text-sm text-white space-x-10">MY DAILY TASK manager</p>
 
           {/* Mobile Menu Toggle */}
-          <button className="md:hidden" onClick={() => setIsOpen(!isOpen)}>
+          <button className="md:hidden my-4" onClick={() => setIsOpen(!isOpen)}>
             {isOpen ? <X size={24} /> : <Menu size={24} />}
           </button>
         </div>
@@ -53,7 +57,6 @@ const Navbar = ({ onSearchChange }) => {
             onClick={() => scrollTo("tasksForm")}
             className="bg-[#28A745] hover:bg-green-600 px-4 py-2 rounded-md transition"
           />
-        
         </div>
       </div>
 

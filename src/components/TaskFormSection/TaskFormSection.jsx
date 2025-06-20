@@ -113,8 +113,8 @@ const TaskFormSection = ({ searchTerm }) => {
     }
   };
 
-  if (loading) return <p>Chargement...</p>;
-  if (error) return <p className="text-red-600">{error}</p>;
+  if (loading) return <p className="text-2xl text-center">Chargement...</p>;
+  if (error) return <p className="text-red-600 ">{error}</p>;
 
   return (
     <section
