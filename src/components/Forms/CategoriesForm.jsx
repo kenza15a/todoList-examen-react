@@ -32,7 +32,7 @@ const CategoriesForm = ({ onAddCategory }) => {
   return (
     <form
       onSubmit={handleSubmit}
-      className="mb-4 flex flex-col md:flex-row gap-4 w-full"
+      className="mb-4 flex flex-col md:flex-row gap-4 w-full mt-5"
     >
       <div className="w-full flex flex-col">
         <input

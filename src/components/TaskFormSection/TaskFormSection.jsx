@@ -57,7 +57,7 @@ const TaskFormSection = ({ searchTerm }) => {
 
   useEffect(() => {
     fetchTasks();
-  // eslint-disable-next-line react-hooks/exhaustive-deps
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [filterCategory, filterCompleted, searchTerm]);
 
   const handleAddCategory = async (name) => {
@@ -145,7 +145,7 @@ const TaskFormSection = ({ searchTerm }) => {
         onUpdateTask={handleUpdateTask}
       />
 
-      <div className="flex justify-center gap-4">
+      <div className="flex justify-center items-center gap-4 flex-col md:flex-row">
         <Button
           buttonText="Ajouter une tâche"
           onClick={() => setIsCreateModalOpen(true)}

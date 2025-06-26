@@ -11,7 +11,7 @@ const Footer = () => {
         Contactez le dev : Kenza.filali.rahal@gmail.com
       </p>
       <p className="text-center text-sm mx-auto">
-        © 2024 Mes taches. Tous droits réservés.
+        © 2025 Mes taches. Tous droits réservés.
       </p>
     </footer>
   );
